@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.soundrecorder.R;
+import com.example.android.soundrecorder.adapters.FileViewerAdapter;
 
 /**
  * Created by zengzhi on 2017/5/27.
@@ -50,7 +51,18 @@ public class FileViewerFragment extends Fragment {
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recording_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        FileViewerAdapter adapter = new FileViewerAdapter(getActivity());
+
+
+        mRecyclerView.setAdapter(adapter);
 
         //return super.onCreateView(inflater, container, savedInstanceState);
         return view;

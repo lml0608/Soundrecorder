@@ -4,4 +4,10 @@
     <string name="tab_title_saved_recordings">SAVED RECORDINGS</string>
     <string name="pause_recording_button">Pause</string>
     <string name="record_prompt">Tap the button to start recording</string>
+    <string name="toast_recording_finish">Recording Saved to</string>
+    <string name="resume_recording_button">Resume</string>
+    <string name="record_in_progress">Recording.</string>
+    <string name="default_file_name">My Recording</string>
+    <string name="insert_recording_failed">Error with saving pet</string>
+    <string name="insert_recording_successful">Recording saved</string>
 </resources>

@@ -1,6 +1,10 @@
 package com.example.android.soundrecorder;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,10 +18,17 @@ import com.example.android.soundrecorder.fragments.RecordFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private boolean permissionToRecordAccepted = false;
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        //申请权限
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -36,6 +47,30 @@ public class MainActivity extends AppCompatActivity {
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+
+            case REQUEST_RECORD_AUDIO_PERMISSION:
+                if (grantResults.length > 0) {
+
+                    for (int result : grantResults) {
+
+                        if (result != PackageManager.PERMISSION_GRANTED) {
+
+                            return;
+                        }
+                    }
+                }else {
+                    finish();
+                }
+                break;
+            default:
+
+        }
+    }
 
     class FragmentAdapter extends FragmentPagerAdapter {
 
@@ -70,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
             return titles[position];
         }
     }
+
+
+
 
 
 }

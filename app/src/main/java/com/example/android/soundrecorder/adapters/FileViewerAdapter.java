@@ -132,7 +132,10 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
 //            currentPetUri = ContentUris.withAppendedId(RecordContract.RecordEntry.CONTENT_URI, id);
 //
 //        }
-//        mContext.getContentResolver().delete(currentPetUri, null, null);
+        mContext.getContentResolver().delete(RecordContract.RecordEntry.CONTENT_URI,
+                RecordContract.RecordEntry.COLUMN_RECORDING_NAME + "=?", new String[] {filePath});
+
+//        mContext.getContentResolver().delete(RecordContract.RecordEntry.CONTENT_URI, null,null);
 
     }
 

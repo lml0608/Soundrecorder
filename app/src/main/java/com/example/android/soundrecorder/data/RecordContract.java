@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
  */
 
 public class RecordContract {
+    
 
     public static final String CONTENT_AUTHORITY = "com.example.android.soundrecorder";
 

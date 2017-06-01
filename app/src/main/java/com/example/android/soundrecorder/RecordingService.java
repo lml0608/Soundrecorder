@@ -3,6 +3,7 @@ package com.example.android.soundrecorder;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Environment;
@@ -36,7 +37,6 @@ public class RecordingService extends Service {
     private String mFilePath;//文件路径
     private MediaRecorder mRecorder;
 
-    private RecordDbHelper mDbHelper;
 
 
 
@@ -57,7 +57,6 @@ public class RecordingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mDbHelper = new RecordDbHelper(getApplicationContext());
     }
 
     @Override
@@ -105,7 +104,7 @@ public class RecordingService extends Service {
     public void stopRecording() {
 
         mRecorder.stop();
-
+        mElapsedMillis = (System.currentTimeMillis() - mStartingTimeMillis);
         mRecorder.reset();
         mRecorder.release();
         mRecorder = null;
@@ -143,8 +142,13 @@ public class RecordingService extends Service {
         do{
             count++;
 
+            Cursor query = getContentResolver().query(RecordEntry.CONTENT_URI, new String[]{"count(*)"}, null, null, null);
+            query.moveToFirst();
+            int recordingCount = query.getInt(0);
+
+            Log.i(TAG, "recordingCount" + recordingCount);
             mFileName = getString(R.string.default_file_name)
-                    + "_" + (mDbHelper.getCount() + count) + ".mp4";
+                    + "_" + (recordingCount + count) + ".mp4";
             mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
             mFilePath += "/SoundRecorder1/" + mFileName;
 

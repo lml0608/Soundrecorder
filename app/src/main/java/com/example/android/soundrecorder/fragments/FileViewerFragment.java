@@ -25,7 +25,7 @@ import com.example.android.soundrecorder.data.RecordContract;
  * Created by zengzhi on 2017/5/27.
  */
 
-public class FileViewerFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor> {
+public class FileViewerFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "FileViewerFragment";
 
@@ -76,8 +76,8 @@ public class FileViewerFragment extends Fragment  implements LoaderManager.Loade
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
+//        linearLayoutManager.setReverseLayout(true);
+//        linearLayoutManager.setStackFromEnd(true);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -94,16 +94,19 @@ public class FileViewerFragment extends Fragment  implements LoaderManager.Loade
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
+                RecordContract.RecordEntry._ID,
                 RecordContract.RecordEntry.COLUMN_RECORDING_NAME,
                 RecordContract.RecordEntry.COLUMN_RECORDING_FILE_PATH,
                 RecordContract.RecordEntry.COLUMN_RECORDING_LENGTH,
                 RecordContract.RecordEntry.COLUMN_TIME_ADDED};
+
+        String sortOrder = RecordContract.RecordEntry.COLUMN_TIME_ADDED + " DESC";
         return new CursorLoader(getActivity(),
                 RecordContract.RecordEntry.CONTENT_URI,
                 projection,
                 null,
                 null,
-                null);
+                sortOrder);
     }
 
     @Override

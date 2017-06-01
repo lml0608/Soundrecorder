@@ -4,6 +4,9 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,12 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.android.soundrecorder.R;
 import com.example.android.soundrecorder.RecordingItem;
 import com.example.android.soundrecorder.data.RecordContract;
 import com.example.android.soundrecorder.data.RecordDbHelper;
+import com.example.android.soundrecorder.fragments.PlaybackFragment;
 import com.example.android.soundrecorder.listeners.OnDatabaseChangedListener;
 
 import java.util.List;
@@ -59,10 +64,12 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
 
         mCursor.moveToPosition(position);
 
-        String recordName = mCursor.getString(mCursor.getColumnIndex(RecordContract.RecordEntry.COLUMN_RECORDING_NAME));
-        int itemDuration = mCursor.getInt(mCursor.getColumnIndex(RecordContract.RecordEntry.COLUMN_RECORDING_LENGTH));
+        final int recordId = mCursor.getInt(mCursor.getColumnIndex(RecordContract.RecordEntry._ID));
 
-        int recordTime = mCursor.getInt(mCursor.getColumnIndex(RecordContract.RecordEntry.COLUMN_TIME_ADDED));
+        final String recordName = mCursor.getString(mCursor.getColumnIndex(RecordContract.RecordEntry.COLUMN_RECORDING_NAME));
+        long itemDuration = mCursor.getLong(mCursor.getColumnIndex(RecordContract.RecordEntry.COLUMN_RECORDING_LENGTH));
+
+        long recordTime = mCursor.getLong(mCursor.getColumnIndex(RecordContract.RecordEntry.COLUMN_TIME_ADDED));
 
         Log.i(TAG, recordName);
 
@@ -78,6 +85,17 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
                         mContext,
                         recordTime,
                         DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_YEAR));
+
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, recordName, Toast.LENGTH_SHORT).show();
+
+                FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
+                PlaybackFragment dialog = PlaybackFragment.newInstance(recordId);
+                dialog.show(fm, "nihao");
+            }
+        });
 
     }
 

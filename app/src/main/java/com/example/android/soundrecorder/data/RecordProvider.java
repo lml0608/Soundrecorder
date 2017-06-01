@@ -19,7 +19,7 @@ import com.example.android.soundrecorder.data.RecordContract.RecordEntry;
 
 public class RecordProvider extends ContentProvider {
 
-    public static final String LOG_TAG = RecordProvider.class.getSimpleName();
+    private static final String LOG_TAG = RecordProvider.class.getSimpleName();
 
     /** URI matcher code for the content URI for the pets table */
     private static final int RECORDS = 100;
